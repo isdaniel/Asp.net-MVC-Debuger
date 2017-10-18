@@ -22,7 +22,7 @@ namespace Asp.net_MVC_Debuger.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +34,9 @@ namespace Asp.net_MVC_Debuger.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -80,10 +80,13 @@ namespace Asp.net_MVC_Debuger.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "登入嘗試失試。");
@@ -116,17 +119,19 @@ namespace Asp.net_MVC_Debuger.Controllers
                 return View(model);
             }
 
-            // 下列程式碼保護兩個因素碼不受暴力密碼破解攻擊。 
-            // 如果使用者輸入不正確的代碼來表示一段指定的時間，則使用者帳戶 
-            // 會有一段指定的時間遭到鎖定。 
+            // 下列程式碼保護兩個因素碼不受暴力密碼破解攻擊。
+            // 如果使用者輸入不正確的代碼來表示一段指定的時間，則使用者帳戶
+            // 會有一段指定的時間遭到鎖定。
             // 您可以在 IdentityConfig 中設定帳戶鎖定設定
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "代碼無效。");
@@ -155,8 +160,8 @@ namespace Asp.net_MVC_Debuger.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // 如需如何啟用帳戶確認和密碼重設的詳細資訊，請造訪 http://go.microsoft.com/fwlink/?LinkID=320771
                     // 傳送包含此連結的電子郵件
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -212,7 +217,7 @@ namespace Asp.net_MVC_Debuger.Controllers
                 // 如需如何啟用帳戶確認和密碼重設的詳細資訊，請造訪 http://go.microsoft.com/fwlink/?LinkID=320771
                 // 傳送包含此連結的電子郵件
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "重設密碼", "請按 <a href=\"" + callbackUrl + "\">這裏</a> 重設密碼");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -334,10 +339,13 @@ namespace Asp.net_MVC_Debuger.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
                 case SignInStatus.Failure:
                 default:
                     // 若使用者沒有帳戶，請提示使用者建立帳戶
@@ -424,6 +432,7 @@ namespace Asp.net_MVC_Debuger.Controllers
         }
 
         #region Helper
+
         // 新增外部登入時用來當做 XSRF 保護
         private const string XsrfKey = "XsrfId";
 
@@ -480,6 +489,7 @@ namespace Asp.net_MVC_Debuger.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+
+        #endregion Helper
     }
 }
