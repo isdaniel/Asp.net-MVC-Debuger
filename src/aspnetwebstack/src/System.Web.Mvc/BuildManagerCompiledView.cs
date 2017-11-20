@@ -63,7 +63,7 @@ namespace System.Web.Mvc
             }
 
             object instance = null;
-
+            //取得頁面類別
             Type type = BuildManager.GetCompiledType(ViewPath);
             if (type != null)
             {

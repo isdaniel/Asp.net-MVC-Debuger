@@ -33,12 +33,20 @@ namespace System.Web.Mvc
             return typesSoFar.Where(type => TypeIsPublicClass(type) && predicate(type));
         }
 
+        /// <summary>
+        /// 取得組件資料從Assembly
+        /// </summary>
+        /// <param name="cacheName"></param>
+        /// <param name="predicate"></param>
+        /// <param name="buildManager"></param>
+        /// <returns></returns>
         public static List<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate, IBuildManager buildManager)
         {
             TypeCacheSerializer serializer = new TypeCacheSerializer();
 
             // first, try reading from the cache on disk
             List<Type> matchingTypes = ReadTypesFromCache(cacheName, predicate, buildManager, serializer);
+            //如果有資料直接回傳
             if (matchingTypes != null)
             {
                 return matchingTypes;
@@ -53,6 +61,15 @@ namespace System.Web.Mvc
             return matchingTypes;
         }
 
+        /// <summary>
+        /// 如果有將快取資料存在硬碟中
+        /// 讀取出來不然回傳null
+        /// </summary>
+        /// <param name="cacheName"></param>
+        /// <param name="predicate"></param>
+        /// <param name="buildManager"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Cache failures are not fatal, and the code should continue executing normally.")]
         internal static List<Type> ReadTypesFromCache(string cacheName, Predicate<Type> predicate, IBuildManager buildManager, TypeCacheSerializer serializer)
         {

@@ -7,9 +7,16 @@ using System.Web.Mvc.Properties;
 
 namespace System.Web.Mvc
 {
+    /// <summary>
+    /// Controller建造者 使用[單例模式]
+    /// 預設使用 DefaultControllerFactory
+    /// </summary>
     public class ControllerBuilder
     {
         private static ControllerBuilder _instance = new ControllerBuilder();
+        /// <summary>
+        /// 提供工廠實作
+        /// </summary>
         private Func<IControllerFactory> _factoryThunk = () => null;
         private HashSet<string> _namespaces = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private IResolver<IControllerFactory> _serviceResolver;
@@ -43,6 +50,10 @@ namespace System.Web.Mvc
             return _serviceResolver.Current;
         }
 
+        /// <summary>
+        /// 設定Controller工廠實體
+        /// </summary>
+        /// <param name="controllerFactory"></param>
         public void SetControllerFactory(IControllerFactory controllerFactory)
         {
             if (controllerFactory == null)
@@ -53,6 +64,10 @@ namespace System.Web.Mvc
             _factoryThunk = () => controllerFactory;
         }
 
+        /// <summary>
+        /// 設定Controller工廠實體 By type
+        /// </summary>
+        /// <param name="controllerFactoryType"></param>
         public void SetControllerFactory(Type controllerFactoryType)
         {
             if (controllerFactoryType == null)

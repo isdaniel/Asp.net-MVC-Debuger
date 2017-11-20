@@ -33,7 +33,11 @@ namespace System.Web.Mvc
         {
             return new ReadOnlyCollection<Type>(_cache.Values.SelectMany(lookup => lookup.SelectMany(t => t)).ToList());
         }
-
+        /// <summary>
+        /// 將 _cache filed 初始話
+        /// 載入關於Controller類別 從Assemblies中
+        /// </summary>
+        /// <param name="buildManager">預設使用BuildManager</param>
         public void EnsureInitialized(IBuildManager buildManager)
         {
             if (_cache == null)
@@ -42,6 +46,12 @@ namespace System.Web.Mvc
                 {
                     if (_cache == null)
                     {
+                        /***
+                         * 獲得Controller類別順序如下
+                         * 已IsControllerType(看後贅字是否是Controller)
+                         * 1.從硬碟中找尋是否有快取的Controller類別
+                         * 2.從組件中掃描出已Controller結尾的類別,並將資料序列話存在硬碟上
+                         **/
                         List<Type> controllerTypes = TypeCacheUtil.GetFilteredTypesFromAssemblies(TypeCacheName, IsControllerType, buildManager);
                         var groupedByName = controllerTypes.GroupBy(
                             t => t.Name.Substring(0, t.Name.Length - "Controller".Length),
@@ -88,7 +98,11 @@ namespace System.Web.Mvc
 
             return matchingTypes;
         }
-
+        /// <summary>
+        /// 查找結尾為Controller的類別
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         internal static bool IsControllerType(Type t)
         {
             return

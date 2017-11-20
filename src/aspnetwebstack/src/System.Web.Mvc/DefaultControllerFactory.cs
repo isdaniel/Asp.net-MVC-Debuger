@@ -15,6 +15,10 @@ using System.Web.SessionState;
 
 namespace System.Web.Mvc
 {
+    /// <summary>
+    /// MVC預設產生Controller的工廠 
+    /// 其中CreateController方法來產生產品
+    /// </summary>
     public class DefaultControllerFactory : IControllerFactory
     {
         private static readonly ConcurrentDictionary<Type, SessionStateBehavior> _sessionStateCache = new ConcurrentDictionary<Type, SessionStateBehavior>();
@@ -133,6 +137,12 @@ namespace System.Web.Mvc
             return new InvalidOperationException(errorText);
         }
 
+        /// <summary>
+        /// 產生Controller產品方法
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerName"></param>
+        /// <returns></returns>
         public virtual IController CreateController(RequestContext requestContext, string controllerName)
         {
             if (requestContext == null)
@@ -144,7 +154,7 @@ namespace System.Web.Mvc
             {
                 throw new ArgumentException(MvcResources.Common_NullOrEmpty, "controllerName");
             }
-
+            //取得Controller型別
             Type controllerType = GetControllerType(requestContext, controllerName);
             IController controller = GetControllerInstance(requestContext, controllerType);
             return controller;
@@ -205,6 +215,7 @@ namespace System.Web.Mvc
             }
 
             RouteData routeData = requestContext.RouteData;
+          
             if (routeData != null && routeData.HasDirectRouteMatch())
             {
                 return GetControllerTypeFromDirectRoute(routeData);

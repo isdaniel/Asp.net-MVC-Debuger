@@ -6,6 +6,10 @@ using System.Web.Compilation;
 
 namespace System.Web.Mvc
 {
+    /// <summary>
+    /// BuildManager的轉接器
+    /// 預設使用BuildManager
+    /// </summary>
     internal sealed class BuildManagerWrapper : IBuildManager
     {
         bool IBuildManager.FileExists(string virtualPath)

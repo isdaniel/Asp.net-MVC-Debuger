@@ -99,6 +99,7 @@ namespace System.Web.Mvc
             {
                 if (engine != null)
                 {
+                    //找尋使用那個ViewEngine
                     result = lookup(engine);
 
                     if (result.View != null)
