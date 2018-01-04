@@ -23,6 +23,7 @@ namespace System.Web.Mvc
 
         public DependencyResolver()
         {
+            //初始使用DefaultDependencyResolver
             InnerSetResolver(new DefaultDependencyResolver());
         }
 
@@ -49,6 +50,10 @@ namespace System.Web.Mvc
             get { return _currentCache; }
         }
 
+        /// <summary>
+        /// 可將第三方IOC容器設置
+        /// </summary>
+        /// <param name="resolver"></param>
         public static void SetResolver(IDependencyResolver resolver)
         {
             _instance.InnerSetResolver(resolver);
@@ -129,8 +134,10 @@ namespace System.Web.Mvc
         /// We'll pick one winner and ignore the others and still guarantee a unique instance.
         /// </remarks>
         private sealed class CacheDependencyResolver : IDependencyResolver
-        {
+        { 
+            //ConcurrentDictionary 是一個多執行緒 安全的Dictionary
             private readonly ConcurrentDictionary<Type, object> _cache = new ConcurrentDictionary<Type, object>();
+           
             private readonly ConcurrentDictionary<Type, IEnumerable<object>> _cacheMultiple = new ConcurrentDictionary<Type, IEnumerable<object>>();
             private readonly Func<Type, object> _getServiceDelegate;
             private readonly Func<Type, IEnumerable<object>> _getServicesDelegate;

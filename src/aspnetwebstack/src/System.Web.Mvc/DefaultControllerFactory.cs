@@ -154,7 +154,7 @@ namespace System.Web.Mvc
             {
                 throw new ArgumentException(MvcResources.Common_NullOrEmpty, "controllerName");
             }
-            //取得Controller型別
+            //取得Controller型別 在目前Assembly中反射取得Controller類型
             Type controllerType = GetControllerType(requestContext, controllerName);
             IController controller = GetControllerInstance(requestContext, controllerType);
             return controller;
@@ -179,6 +179,7 @@ namespace System.Web.Mvc
                         controllerType),
                     "controllerType");
             }
+            //使用IControllerActivator(預設DefaultControllerActivator) 來創建Controller物件
             return ControllerActivator.Create(requestContext, controllerType);
         }
 
@@ -224,6 +225,7 @@ namespace System.Web.Mvc
             // first search in the current route's namespace collection
             object routeNamespacesObj;
             Type match;
+            //DataTokens 存放 NameSpace
             if (routeData.DataTokens.TryGetValue(RouteDataTokenKeys.Namespaces, out routeNamespacesObj))
             {
                 IEnumerable<string> routeNamespaces = routeNamespacesObj as IEnumerable<string>;
@@ -303,8 +305,9 @@ namespace System.Web.Mvc
         {
             // Once the master list of controllers has been created we can quickly index into it
             ControllerTypeCache.EnsureInitialized(BuildManager);
-
+            //找到符合controllerName名稱之Type 
             ICollection<Type> matchingTypes = ControllerTypeCache.GetControllerTypes(controllerName, namespaces);
+            //找到相對應的Controller Type個數
             switch (matchingTypes.Count)
             {
                 case 0:
@@ -376,6 +379,8 @@ namespace System.Web.Mvc
             {
                 try
                 {
+                    //IOC解析器 (預設使用：DefaultDependencyResolver)  
+                    //DefaultDependencyResolver.GetService 創建物件使用Activator.CreateInstance()
                     return (IController)(_resolverThunk().GetService(controllerType) ?? Activator.CreateInstance(controllerType));
                 }
                 catch (Exception ex)

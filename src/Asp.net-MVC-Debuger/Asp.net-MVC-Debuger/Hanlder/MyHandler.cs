@@ -16,8 +16,9 @@ namespace Asp.net_MVC_Debuger.Hanlder
         }
 
         public void ProcessRequest(HttpContext context)
-        {
-            context.Response.Write("Hello");
+        {   
+           
+
         }
     }
 }

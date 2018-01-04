@@ -27,6 +27,9 @@ namespace System.Web.Mvc
             _dependencyResolver = dependencyResolver;
         }
 
+        /// <summary>
+        /// 在DI中找詢註冊的IFilterProvider 並將當前容器的IFilterProvider物件陣列合併
+        /// </summary>
         internal IFilterProvider[] CombinedItems
         {
             get

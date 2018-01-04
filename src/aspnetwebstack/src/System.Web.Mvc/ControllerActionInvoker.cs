@@ -235,6 +235,13 @@ namespace System.Web.Mvc
             return propertyName => BindAttribute.IsPropertyAllowed(propertyName, bindingInfo.Include, bindingInfo.Exclude);
         }
 
+        /// <summary>
+        /// 執行Action方法 主要動作
+        /// Filter也在裡面做過濾
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
         public virtual bool InvokeAction(ControllerContext controllerContext, string actionName)
         {
             if (controllerContext == null)
@@ -288,8 +295,9 @@ namespace System.Web.Mvc
                             {
                                 ValidateRequest(controllerContext);
                             }
-
+                            //取得Action方法 執行參數
                             IDictionary<string, object> parameters = GetParameterValues(controllerContext, actionDescriptor);
+                            //執行方法 和執行 IList<IActionFilter> 過濾器
                             ActionExecutedContext postActionContext = InvokeActionMethodWithFilters(controllerContext, filterInfo.ActionFilters, actionDescriptor, parameters);
 
                             // The action succeeded. Let all authentication filters contribute to an action result (to
@@ -312,7 +320,9 @@ namespace System.Web.Mvc
                 catch (Exception ex)
                 {
                     // something blew up, so execute the exception filters
+                    // 錯誤處理過濾器 
                     ExceptionContext exceptionContext = InvokeExceptionFilters(controllerContext, filterInfo.ExceptionFilters, ex);
+                    //如果需要自己處理錯誤 exceptionContext.ExceptionHandled 設為true
                     if (!exceptionContext.ExceptionHandled)
                     {
                         throw;
@@ -327,6 +337,13 @@ namespace System.Web.Mvc
             return false;
         }
 
+        /// <summary>
+        /// 執行Action方法
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="actionDescriptor"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         protected virtual ActionResult InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
         {
             object returnValue = actionDescriptor.Execute(controllerContext, parameters);
@@ -334,9 +351,18 @@ namespace System.Web.Mvc
             return result;
         }
 
+        /// <summary>
+        /// 取得Action執行結果(包含Filter)
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="preContext"></param>
+        /// <param name="continuation"></param>
+        /// <returns></returns>
         internal static ActionExecutedContext InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func<ActionExecutedContext> continuation)
         {
+            //執行Action 過濾器
             filter.OnActionExecuting(preContext);
+            //如果有Result 直接返回
             if (preContext.Result != null)
             {
                 return new ActionExecutedContext(preContext, preContext.ActionDescriptor, true /* canceled */, null /* exception */)
@@ -356,6 +382,7 @@ namespace System.Web.Mvc
                 // This type of exception occurs as a result of Response.Redirect(), but we special-case so that
                 // the filters don't see this as an error.
                 postContext = new ActionExecutedContext(preContext, preContext.ActionDescriptor, false /* canceled */, null /* exception */);
+                //執行Action後 過濾器
                 filter.OnActionExecuted(postContext);
                 throw;
             }
@@ -386,6 +413,7 @@ namespace System.Web.Mvc
                                                        };
 
             // need to reverse the filter list because the continuations are built up backward
+            //preContext 執行前Context   next執行後Context
             Func<ActionExecutedContext> thunk = filters.Reverse().Aggregate(continuation,
                                                                             (next, filter) => () => InvokeActionMethodFilter(filter, preContext, next));
             return thunk();
@@ -455,6 +483,13 @@ namespace System.Web.Mvc
             return postContext;
         }
 
+        /// <summary>
+        /// 執行後使用過濾器
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="filters"></param>
+        /// <param name="actionResult"></param>
+        /// <returns></returns>
         protected virtual ResultExecutedContext InvokeActionResultWithFilters(ControllerContext controllerContext, IList<IResultFilter> filters, ActionResult actionResult)
         {
             ResultExecutingContext preContext = new ResultExecutingContext(controllerContext, actionResult);

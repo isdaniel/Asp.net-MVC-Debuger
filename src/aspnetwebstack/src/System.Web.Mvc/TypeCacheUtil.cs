@@ -34,7 +34,10 @@ namespace System.Web.Mvc
         }
 
         /// <summary>
-        /// 取得組件資料從Assembly
+        /// 取得資料型別 
+        /// 取得方式:
+        ///     1.快取檔案
+        ///     2.組件反射
         /// </summary>
         /// <param name="cacheName"></param>
         /// <param name="predicate"></param>

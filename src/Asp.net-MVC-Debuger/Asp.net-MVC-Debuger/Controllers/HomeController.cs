@@ -25,7 +25,7 @@ namespace Asp.net_MVC_Debuger.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
+           
             return View();
         }
     }

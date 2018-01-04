@@ -153,6 +153,7 @@ namespace System.Web.Mvc
         {
             IController controller;
             IControllerFactory factory;
+            //取得 控制器工廠(預設DefaultControllerFactory) 和 要執行的Controller
             ProcessRequestInit(httpContext, out controller, out factory);
 
             try
