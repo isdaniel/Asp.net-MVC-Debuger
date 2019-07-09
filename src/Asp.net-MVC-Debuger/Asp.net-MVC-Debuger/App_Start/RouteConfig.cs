@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Asp.net_MVC_Debuger.Hanlder;
 
 namespace Asp.net_MVC_Debuger
 {
@@ -13,11 +14,24 @@ namespace Asp.net_MVC_Debuger
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapPageRoute(
+                "PhysicalFile",
+                "GetFile/{Name}",
+                "~/PhysicalFile.aspx", true,
+                new RouteValueDictionary()
+                {
+                    { "Name","PhysicalFile"}
+                });
+
+            routes.Add(new Route("Customer",new MyHandlerRouter()));
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+           
         }
     }
 }
