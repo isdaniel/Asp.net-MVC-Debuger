@@ -11,15 +11,22 @@ namespace Asp.net_MVC_Debuger
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public override void Init()
+        {
+            
+        }
+
         protected void Application_Start()
         {
+            
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             
             //ViewEngines.Engines.Add();
-            // ControllerBuilder.Current.SetControllerFactory(new MyControllerFactory());
+            //ControllerBuilder.Current.SetControllerFactory(new MyControllerFactory());
+            //DependencyResolver.SetResolver();
         }
     }
 

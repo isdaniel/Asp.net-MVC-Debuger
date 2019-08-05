@@ -250,6 +250,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\PipelineEvents.cshtml" />
+    <Content Include="Views\Home\HttpView.cshtml" />
+    <Content Include="Test.aas" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

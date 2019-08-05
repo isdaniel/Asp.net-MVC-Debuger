@@ -1,0 +1,12 @@
+﻿@using System.Linq
+@model System.Collections.Generic.IEnumerable<string>
+@{
+    ViewBag.Title = "PipelineEvents";
+}
+
+@foreach (var item in Model)
+{
+    @item    <br />
+}
+
+@Model.FirstOrDefault()
