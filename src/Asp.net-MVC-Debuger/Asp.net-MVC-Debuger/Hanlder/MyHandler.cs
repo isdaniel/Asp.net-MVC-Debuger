@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Routing;
 
 namespace Asp.net_MVC_Debuger.Hanlder
 {
@@ -17,9 +18,16 @@ namespace Asp.net_MVC_Debuger.Hanlder
 
         public void ProcessRequest(HttpContext context)
         {
-            
-            context.Response.Write("Hello World");
+         
+            context.Response.Write("Hello MyHandler!!");
+        }
+    }
 
+    public class MyHandlerRouter : IRouteHandler
+    {
+        public IHttpHandler GetHttpHandler(RequestContext requestContext)
+        {
+            return new MyHandler();
         }
     }
 

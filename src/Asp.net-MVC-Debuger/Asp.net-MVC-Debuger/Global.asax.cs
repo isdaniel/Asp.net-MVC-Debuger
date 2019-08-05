@@ -23,6 +23,7 @@ namespace Asp.net_MVC_Debuger
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             
             //ViewEngines.Engines.Add();
             //ControllerBuilder.Current.SetControllerFactory(new MyControllerFactory());

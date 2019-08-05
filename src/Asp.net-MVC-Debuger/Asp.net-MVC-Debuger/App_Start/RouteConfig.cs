@@ -22,17 +22,28 @@ namespace Asp.net_MVC_Debuger
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.Add("Test",new Route("{controller}/Test123",
+            routes.MapPageRoute(
+                "PhysicalFile",
+                "GetFile/{Name}",
+                "~/PhysicalFile.aspx", true,
+                new RouteValueDictionary()
+                {
+                    { "Name","PhysicalFile"}
+                });
+
+            routes.Add(new Route("Customer",new MyHandlerRouter()));
+    		routes.Add("Test",new Route("{controller}/Test123",
                 new MyRouteProvider())
             {
                 Defaults = new RouteValueDictionary() { { "controller" , "Home"} }
             });
-            
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+           
         }
     }
 }

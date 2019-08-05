@@ -12,14 +12,6 @@ using System.Web.Mvc;
 
 namespace Asp.net_MVC_Debuger.Controllers
 {
-    public class MyBinder : CustomModelBinderAttribute
-    {
-        public override IModelBinder GetBinder()
-        {ModelBinderProviders.BinderProviders.Add();
-            return new HttpPostedFileBaseModelBinder();
-        }
-    }
-
     public class HomeController : Controller
     {
         public ActionResult Index()
