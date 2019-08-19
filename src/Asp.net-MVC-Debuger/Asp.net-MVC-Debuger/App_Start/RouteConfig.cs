@@ -31,12 +31,12 @@ namespace Asp.net_MVC_Debuger
                     { "Name","PhysicalFile"}
                 });
 
-            routes.Add(new Route("Customer",new MyHandlerRouter()));
-    		routes.Add("Test",new Route("{controller}/Test123",
-                new MyRouteProvider())
-            {
-                Defaults = new RouteValueDictionary() { { "controller" , "Home"} }
-            });
+            //      routes.Add(new Route("Customer",new MyHandlerRouter()));
+            //routes.Add("Test",new Route("{controller}/Test123",
+            //          new MyRouteProvider())
+            //      {
+            //          Defaults = new RouteValueDictionary() { { "controller" , "Home"} }
+            //      });
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

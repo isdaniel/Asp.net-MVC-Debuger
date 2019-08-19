@@ -9,12 +9,13 @@ using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Asp.net_MVC_Debuger.Models;
 
 namespace Asp.net_MVC_Debuger.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(MessageViewModel view)
         {
             return View();
         }
