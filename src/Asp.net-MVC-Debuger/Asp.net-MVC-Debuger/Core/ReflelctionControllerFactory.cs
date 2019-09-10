@@ -79,15 +79,13 @@ namespace Asp.net_MVC_Debuger.Core
      }
     public class ReflectionControllerFactory : IControllerFactory
     {
-        //其他成员
-        private static readonly List<Type> controllerTypes;
+        private static readonly IEnumerable<Type> controllerTypes;
+
         static ReflectionControllerFactory()
         {
-            controllerTypes = new List<Type>();
-            foreach (Assembly assembly in BuildManager.GetReferencedAssemblies())
-            {
-                controllerTypes.AddRange(assembly.GetTypes().Where(type => typeof(IController).IsAssignableFrom(type)));
-            }
+            controllerTypes = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(type => typeof(IController).IsAssignableFrom(type));
         }
 
         public IController CreateController(RequestContext requestContext, string controllerName)
@@ -98,33 +96,6 @@ namespace Asp.net_MVC_Debuger.Core
                 throw new HttpException(404, "No controller found");
             }
             return (IController)Activator.CreateInstance(controllerType);
-        }
-
-        private static bool IsNamespaceMatch(string requestedNamespace, string targetNamespace)
-        {
-            if (!requestedNamespace.EndsWith(".*", StringComparison.OrdinalIgnoreCase))
-            {
-                return string.Equals(requestedNamespace, targetNamespace, StringComparison.OrdinalIgnoreCase);
-            }
-            requestedNamespace = requestedNamespace.Substring(0, requestedNamespace.Length - ".*".Length);
-            if (!targetNamespace.StartsWith(requestedNamespace, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-            return ((requestedNamespace.Length == targetNamespace.Length) || (targetNamespace[requestedNamespace.Length] == '.'));
-        }
-
-        private Type GetControllerType(IEnumerable<string> namespaces, Type[] controllerTypes)
-        {
-            var types = (from type in controllerTypes
-                         where namespaces.Any(ns => IsNamespaceMatch(ns, type.Namespace))
-                         select type).ToArray();
-            switch (types.Length)
-            {
-                case 0: return null;
-                case 1: return types[0];
-                default: throw new InvalidOperationException("Multiple types were found that match the requested controller name.");
-            }
         }
 
         public SessionStateBehavior GetControllerSessionBehavior(RequestContext requestContext, string controllerName)
@@ -146,43 +117,14 @@ namespace Asp.net_MVC_Debuger.Core
 
         protected virtual Type GetControllerType(RouteData routeData, string controllerName)
         {
-            var types = controllerTypes.Where(type => string.Compare(controllerName + "Controller", type.Name, true) == 0).ToArray();
-            if (types.Length == 0)
-            {
-                return null;
-            }
-
-            var namespaces = routeData.DataTokens["Namespaces"] as IEnumerable<string>;
-            namespaces = namespaces ?? new string[0];
-            Type contrllerType = this.GetControllerType(namespaces, types);
-            if (null != contrllerType)
-            {
-                return contrllerType;
-            }
-
-            bool useNamespaceFallback = true;
-            if (null != routeData.DataTokens["UseNamespaceFallback"])
-            {
-                useNamespaceFallback = (bool)(routeData.DataTokens["UseNamespaceFallback"]);
-            }
-
-            if (!useNamespaceFallback)
-            {
-                return null;
-            }
-
-            contrllerType = this.GetControllerType(ControllerBuilder.Current.DefaultNamespaces, types);
-            if (null != contrllerType)
-            {
-                return contrllerType;
-            }
+            var types = controllerTypes.Where(type => string.Compare(controllerName, type.Name, StringComparison.OrdinalIgnoreCase) == 0).ToArray();
 
             if (types.Length == 1)
             {
                 return types[0];
             }
 
-            throw new InvalidOperationException("Multiple types were found that match the requested controller name.");
+            return null;
         }
     }
 }

@@ -232,9 +232,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\HomeController\About.cshtml" />
+    <Content Include="Views\HomeController\Contact.cshtml" />
+    <Content Include="Views\HomeController\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -255,8 +255,8 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\PipelineEvents.cshtml" />
-    <Content Include="Views\Home\HttpView.cshtml" />
+    <Content Include="Views\HomeController\PipelineEvents.cshtml" />
+    <Content Include="Views\HomeController\HttpView.cshtml" />
     <Content Include="Test.aas" />
     <Content Include="Views\ModelBinding\Content.cshtml" />
   </ItemGroup>
