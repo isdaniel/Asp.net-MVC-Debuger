@@ -21,7 +21,7 @@ namespace System.Web.Mvc
 
             HttpResponseBase response = context.HttpContext.Response;
 
-            if (!String.IsNullOrEmpty(ContentType))
+            if (!string.IsNullOrEmpty(ContentType))
             {
                 response.ContentType = ContentType;
             }

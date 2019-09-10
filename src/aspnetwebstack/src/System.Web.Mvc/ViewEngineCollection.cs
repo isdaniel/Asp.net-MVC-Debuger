@@ -95,6 +95,7 @@ namespace System.Web.Mvc
                 searched = new List<string>();
             }
 
+            //預設使用aspx和razor ViewEngine
             foreach (IViewEngine engine in CombinedItems)
             {
                 if (engine != null)

@@ -134,6 +134,13 @@ namespace System.Web.Mvc
             return UnwrapPossibleArrayType(cultureToUse, RawValue, type);
         }
 
+        /// <summary>
+        /// 1. 判斷是否是Array類型
+        /// </summary>
+        /// <param name="culture"></param>
+        /// <param name="value"></param>
+        /// <param name="destinationType"></param>
+        /// <returns></returns>
         private static object UnwrapPossibleArrayType(CultureInfo culture, object value, Type destinationType)
         {
             if (value == null || destinationType.IsInstanceOfType(value))

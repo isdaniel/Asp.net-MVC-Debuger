@@ -306,6 +306,7 @@ namespace System.Web.Mvc
                             AuthenticationChallengeContext challengeContext = InvokeAuthenticationFiltersChallenge(
                                 controllerContext, filterInfo.AuthenticationFilters, actionDescriptor,
                                 postActionContext.Result);
+
                             InvokeActionResultWithFilters(controllerContext, filterInfo.ResultFilters,
                                 challengeContext.Result ?? postActionContext.Result);
                         }

@@ -25,6 +25,7 @@ namespace System.Web.Mvc
             ActionDescriptor = actionDescriptor;
             Canceled = canceled;
             Exception = exception;
+               
         }
 
         public virtual ActionDescriptor ActionDescriptor { get; set; }

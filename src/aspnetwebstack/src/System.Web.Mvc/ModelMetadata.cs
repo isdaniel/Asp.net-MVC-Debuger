@@ -378,7 +378,7 @@ namespace System.Web.Mvc
             else if (viewData.ModelMetadata != null)
             {
                 //  Try getting a property from ModelMetadata if we couldn't find an answer in ViewData
-                ModelMetadata propertyMetadata = viewData.ModelMetadata.Properties.Where(p => p.PropertyName == expression).FirstOrDefault();
+                ModelMetadata propertyMetadata = viewData.ModelMetadata.Properties.FirstOrDefault(p => p.PropertyName == expression);
                 if (propertyMetadata != null)
                 {
                     return propertyMetadata;

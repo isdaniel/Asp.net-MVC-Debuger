@@ -393,7 +393,9 @@ namespace System.Web.Mvc
                 {
                     typeToCreate = typeof(Dictionary<,>).MakeGenericType(modelType.GetGenericArguments());
                 }
-                else if (genericTypeDefinition == typeof(IEnumerable<>) || genericTypeDefinition == typeof(ICollection<>) || genericTypeDefinition == typeof(IList<>))
+                else if (genericTypeDefinition == typeof(IEnumerable<>) ||
+                         genericTypeDefinition == typeof(ICollection<>) || 
+                         genericTypeDefinition == typeof(IList<>))
                 {
                     typeToCreate = typeof(List<>).MakeGenericType(modelType.GetGenericArguments());
                 }
@@ -601,7 +603,7 @@ namespace System.Web.Mvc
             // methods, which are really the old-school validation hooks.
             if (value == null && bindingContext.ModelState.IsValidField(modelStateKey))
             {
-                ModelValidator requiredValidator = ModelValidatorProviders.Providers.GetValidators(propertyMetadata, controllerContext).Where(v => v.IsRequired).FirstOrDefault();
+                ModelValidator requiredValidator = ModelValidatorProviders.Providers.GetValidators(propertyMetadata, controllerContext).FirstOrDefault(v => v.IsRequired);
                 if (requiredValidator != null)
                 {
                     foreach (ModelValidationResult validationResult in requiredValidator.Validate(bindingContext.Model))
