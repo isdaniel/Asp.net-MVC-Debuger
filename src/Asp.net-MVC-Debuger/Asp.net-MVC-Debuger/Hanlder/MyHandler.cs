@@ -30,4 +30,23 @@ namespace Asp.net_MVC_Debuger.Hanlder
             return new MyHandler();
         }
     }
+
+    public class MyModuel : IHttpModule
+    {
+        public void Init(HttpApplication context)
+        {
+            context.ResolveRequestCache += Context_PostAcquireRequestState;
+            
+        }
+
+        private void Context_PostAcquireRequestState(object sender, EventArgs e)
+        {
+            
+        }
+
+        public void Dispose()
+        {
+            
+        }
+    }
 }

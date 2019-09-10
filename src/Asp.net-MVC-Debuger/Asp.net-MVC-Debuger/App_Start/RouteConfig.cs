@@ -8,6 +8,14 @@ using Asp.net_MVC_Debuger.Hanlder;
 
 namespace Asp.net_MVC_Debuger
 {
+    public class MyRouteProvider : IRouteHandler
+    {
+        public IHttpHandler GetHttpHandler(RequestContext requestContext)
+        {
+            return new MyHandler();
+        }
+    }
+
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
@@ -23,8 +31,12 @@ namespace Asp.net_MVC_Debuger
                     { "Name","PhysicalFile"}
                 });
 
-            routes.Add(new Route("Customer",new MyHandlerRouter()));
-
+            //      routes.Add(new Route("Customer",new MyHandlerRouter()));
+            //routes.Add("Test",new Route("{controller}/Test123",
+            //          new MyRouteProvider())
+            //      {
+            //          Defaults = new RouteValueDictionary() { { "controller" , "Home"} }
+            //      });
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

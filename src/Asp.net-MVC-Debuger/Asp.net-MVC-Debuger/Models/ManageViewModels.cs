@@ -7,6 +7,7 @@ namespace Asp.net_MVC_Debuger.Models
 {
     public class IndexViewModel
     {
+
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
