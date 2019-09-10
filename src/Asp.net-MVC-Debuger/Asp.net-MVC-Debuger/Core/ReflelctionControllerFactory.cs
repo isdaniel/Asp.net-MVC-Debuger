@@ -77,17 +77,14 @@ namespace Asp.net_MVC_Debuger.Core
 
         }
 
-        //其他成员
         protected virtual Type GetControllerType(RouteData routeData, string controllerName)
         {
-            //根据类型名称筛选
             var types = controllerTypes.Where(type => string.Compare(controllerName + "Controller", type.Name, true) == 0).ToArray();
             if (types.Length == 0)
             {
                 return null;
             }
 
-            //通过路由对象的命名空间进行匹配
             var namespaces = routeData.DataTokens["Namespaces"] as IEnumerable<string>;
             namespaces = namespaces ?? new string[0];
             Type contrllerType = this.GetControllerType(namespaces, types);
@@ -96,33 +93,28 @@ namespace Asp.net_MVC_Debuger.Core
                 return contrllerType;
             }
 
-            //是否允许采用后备命名空间
             bool useNamespaceFallback = true;
             if (null != routeData.DataTokens["UseNamespaceFallback"])
             {
                 useNamespaceFallback = (bool)(routeData.DataTokens["UseNamespaceFallback"]);
             }
 
-            //如果不允许采用后备命名空间，返回Null
             if (!useNamespaceFallback)
             {
                 return null;
             }
 
-            //通过当前ControllerBuilder的默认命名空间进行匹配
             contrllerType = this.GetControllerType(ControllerBuilder.Current.DefaultNamespaces, types);
             if (null != contrllerType)
             {
                 return contrllerType;
             }
 
-            //如果只存在一个类型名称匹配的Controller，则返回之
             if (types.Length == 1)
             {
                 return types[0];
             }
 
-            //如果具有多个类型名称匹配的Controller，则抛出异常
             throw new InvalidOperationException("Multiple types were found that match the requested controller name.");
         }
     }
