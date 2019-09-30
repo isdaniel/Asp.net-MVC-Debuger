@@ -22,15 +22,6 @@ namespace Asp.net_MVC_Debuger
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapPageRoute(
-                "PhysicalFile",
-                "GetFile/{Name}",
-                "~/PhysicalFile.aspx", true,
-                new RouteValueDictionary()
-                {
-                    { "Name","PhysicalFile"}
-                });
-
             //      routes.Add(new Route("Customer",new MyHandlerRouter()));
             //routes.Add("Test",new Route("{controller}/Test123",
             //          new MyRouteProvider())
@@ -43,7 +34,17 @@ namespace Asp.net_MVC_Debuger
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-           
+
+            routes.MapPageRoute(
+                "PhysicalFile",
+                "GetFile/{Name}",
+                "~/PhysicalFile.aspx", true,
+                new RouteValueDictionary()
+                {
+                    { "Name","PhysicalFile"}
+                });
+
+
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Asp.net_MVC_Debuger.Controllers
             return View();
         }
 
+        public void TestVoide(int? i,char? b) { }
+
         public ActionResult HttpHandles()
         {
             
